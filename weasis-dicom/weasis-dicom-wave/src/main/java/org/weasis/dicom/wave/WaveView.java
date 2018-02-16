@@ -134,6 +134,16 @@ public class WaveView extends JPanel implements SeriesViewerListener {
 
         annotationTool.updateMeasuredItems(list);
     }
+    
+
+    public void clearMeasurements() {
+        if (waveLayoutManager != null) {
+            for (LeadPanel lead : waveLayoutManager.getSortedComponents()) {
+                lead.removeAllMarkers();
+            }
+        }
+        annotationTool.updateMeasuredItems(null);
+    }
 
     public void clearMeasurements() {
         if (waveLayoutManager != null) {
