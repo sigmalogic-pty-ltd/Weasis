@@ -62,11 +62,6 @@
 			<version>${felix.framework.version}</version>
 		</dependency>
 		<dependency>
-			<groupId>org.weasis.thirdparty</groupId>
-			<artifactId>substance</artifactId>
-			<version>${substance.version}</version>
-		</dependency>
-		<dependency>
 			<groupId>org.weasis.thirdparty.javax.jnlp</groupId>
 			<artifactId>javaws</artifactId>
 		</dependency>

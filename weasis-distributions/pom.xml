@@ -252,17 +252,23 @@
 									<outputDirectory>${tmp.bundle.dir}</outputDirectory>
 								</artifactItem>
 								<artifactItem>
-									<groupId>org.weasis.thirdparty</groupId>
-									<artifactId>docking-frames</artifactId>
-									<version>${dockingframes.version}</version>
-									<outputDirectory>${tmp.bundle.dir}</outputDirectory>
-									<!-- Workaround to get a snapshot name without timestamp (download from nexus) -->
-									<destFileName>docking-frames-${dockingframes.version}.jar</destFileName>
-								</artifactItem>
-								<artifactItem>
 									<groupId>org.weasis.thirdparty.com.sun.media</groupId>
 									<artifactId>vecmath</artifactId>
 									<version>${com.sun.media.j3d.version}</version>
+									<artifactId>vecmath</artifactId>
+									<version>${com.sun.media.j3d.version}</version>
+									<outputDirectory>${tmp.bundle.dir}</outputDirectory>
+								</artifactItem>
+								<artifactItem>
+									<groupId>org.controlsfx</groupId>
+									<artifactId>controlsfx</artifactId>
+									<version>${controlsfx.version}</version>
+									<outputDirectory>${tmp.bundle.dir}</outputDirectory>
+								</artifactItem>
+								<artifactItem>
+									<groupId>com.jfoenix</groupId>
+									<artifactId>jfoenix</artifactId>
+									<version>${jfoenix.version}</version>
 									<outputDirectory>${tmp.bundle.dir}</outputDirectory>
 								</artifactItem>
 
@@ -380,46 +386,6 @@
 								<artifactItem>
 									<groupId>org.weasis.dicom</groupId>
 									<artifactId>weasis-dicom-sr</artifactId>
-									<version>${app.version}</version>
-									<outputDirectory>${tmp.bundle.dir}</outputDirectory>
-								</artifactItem>
-								<artifactItem>
-									<groupId>org.weasis.dicom</groupId>
-									<artifactId>weasis-dicom-au</artifactId>
-									<version>${app.version}</version>
-									<outputDirectory>${tmp.bundle.dir}</outputDirectory>
-								</artifactItem>
-								<artifactItem>
-									<groupId>org.weasis.dicom</groupId>
-									<artifactId>weasis-dicom-send</artifactId>
-									<version>${app.version}</version>
-									<outputDirectory>${tmp.bundle.dir}</outputDirectory>
-								</artifactItem>
-								<artifactItem>
-									<groupId>org.weasis.dicom</groupId>
-									<artifactId>weasis-dicom-qr</artifactId>
-									<version>${app.version}</version>
-									<outputDirectory>${tmp.bundle.dir}</outputDirectory>
-								</artifactItem>
-								<artifactItem>
-									<groupId>org.weasis.dicom</groupId>
-									<artifactId>weasis-dicom-wave</artifactId>
-									<version>${app.version}</version>
-									<outputDirectory>${tmp.bundle.dir}</outputDirectory>
-								</artifactItem>
-
-								<!-- ===================================== -->
-								<!-- Weasis Acquisition bundles -->
-								<!-- ===================================== -->
-								<artifactItem>
-									<groupId>org.weasis.acquire</groupId>
-									<artifactId>weasis-acquire-explorer</artifactId>
-									<version>${app.version}</version>
-									<outputDirectory>${tmp.bundle.dir}</outputDirectory>
-								</artifactItem>
-								<artifactItem>
-									<groupId>org.weasis.acquire</groupId>
-									<artifactId>weasis-acquire-editor</artifactId>
 									<version>${app.version}</version>
 									<outputDirectory>${tmp.bundle.dir}</outputDirectory>
 								</artifactItem>
@@ -771,30 +737,31 @@
 							</execution>
 						</executions>
 					</plugin>
-					<plugin>
-						<groupId>org.apache.maven.plugins</groupId>
-						<artifactId>maven-dependency-plugin</artifactId>
-						<executions>
-							<execution>
-								<id>unpack-i18njar</id>
-								<phase>package</phase>
-								<goals>
-									<goal>unpack</goal>
-								</goals>
-								<configuration>
-									<artifactItems>
-										<artifactItem>
-											<groupId>org.weasis</groupId>
-											<artifactId>weasis-i18n-dist</artifactId>
-											<version>2.0.0-SNAPSHOT</version>
-											<type>zip</type>
-											<outputDirectory>${project.build.directory}/tmp/bundle-i18n</outputDirectory>
-										</artifactItem>
-									</artifactItems>
-								</configuration>
-							</execution>
-						</executions>
-					</plugin>
+<!-- 					<plugin> -->
+<!-- 						<groupId>org.apache.maven.plugins</groupId> -->
+<!-- 						<artifactId>maven-dependency-plugin</artifactId> -->
+<!-- 						<version>3.0.1</version> -->
+<!-- 						<executions> -->
+<!-- 							<execution> -->
+<!-- 								<id>unpack-i18njar</id> -->
+<!-- 								<phase>package</phase> -->
+<!-- 								<goals> -->
+<!-- 									<goal>unpack</goal> -->
+<!-- 								</goals> -->
+<!-- 								<configuration> -->
+<!-- 									<artifactItems> -->
+<!-- 										<artifactItem> -->
+<!-- 											<groupId>org.weasis</groupId> -->
+<!-- 											<artifactId>weasis-i18n-dist</artifactId> -->
+<!-- 											<version>2.0.0-SNAPSHOT</version> -->
+<!-- 											<type>zip</type> -->
+<!-- 											<outputDirectory>${project.build.directory}/tmp/bundle-i18n</outputDirectory> -->
+<!-- 										</artifactItem> -->
+<!-- 									</artifactItems> -->
+<!-- 								</configuration> -->
+<!-- 							</execution> -->
+<!-- 						</executions> -->
+<!-- 					</plugin> -->
 					<plugin>
 						<groupId>org.apache.maven.plugins</groupId>
 						<artifactId>maven-assembly-plugin</artifactId>

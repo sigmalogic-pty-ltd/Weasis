@@ -29,9 +29,6 @@ import org.weasis.core.api.media.data.Series;
 import org.weasis.core.api.media.data.SeriesThumbnail;
 import org.weasis.core.api.media.data.TagW;
 import org.weasis.core.api.media.data.Thumbnail;
-import org.weasis.core.ui.docking.UIManager;
-import org.weasis.core.ui.editor.SeriesViewerFactory;
-import org.weasis.core.ui.editor.ViewerPluginBuilder;
 import org.weasis.dicom.codec.DicomMediaIO;
 import org.weasis.dicom.codec.DicomSpecialElement;
 import org.weasis.dicom.codec.TagD;
@@ -43,7 +40,7 @@ import org.weasis.dicom.codec.TagD.Level;
  * @version $Rev$ $Date$
  */
 
-public class LoadDicomObjects extends ExplorerTask<Boolean, String> {
+public class LoadDicomObjects extends ExplorerTask<Boolean> {
 
     private static final org.slf4j.Logger LOGGER = LoggerFactory.getLogger(LoadDicomObjects.class);
     private final Attributes[] dicomObjectsToLoad;
@@ -63,7 +60,7 @@ public class LoadDicomObjects extends ExplorerTask<Boolean, String> {
     }
 
     @Override
-    protected Boolean doInBackground() throws Exception {
+    protected Boolean call() throws Exception {
         dicomModel
             .firePropertyChange(new ObservableEvent(ObservableEvent.BasicAction.LOADING_START, dicomModel, null, this));
         addSelectionAndnotify();
@@ -72,9 +69,11 @@ public class LoadDicomObjects extends ExplorerTask<Boolean, String> {
 
     @Override
     protected void done() {
-        dicomModel
-            .firePropertyChange(new ObservableEvent(ObservableEvent.BasicAction.LOADING_STOP, dicomModel, null, this));
-        LOGGER.info("End of loading DICOM locally"); //$NON-NLS-1$
+        GuiExecutor.executeFX(() -> {
+            dicomModel.firePropertyChange(
+                new ObservableEvent(ObservableEvent.BasicAction.LOADING_STOP, dicomModel, null, this));
+            LOGGER.info("End of loading DICOM locally"); //$NON-NLS-1$
+        });
     }
 
     public void addSelectionAndnotify() {
@@ -104,10 +103,10 @@ public class LoadDicomObjects extends ExplorerTask<Boolean, String> {
         }
 
         for (final SeriesThumbnail t : thumbs) {
-            MediaSeries<MediaElement> series = t.getSeries();
+            MediaSeries<MediaElement> series = (MediaSeries<MediaElement>) t.getSeries();
             // Avoid to rebuild most of CR series thumbnail
             if (series != null && series.size(null) > 2) {
-                GuiExecutor.instance().execute(t::reBuildThumbnail);
+                GuiExecutor.executeFX(t::reBuildThumbnail);
             }
         }
     }
@@ -156,7 +155,7 @@ public class LoadDicomObjects extends ExplorerTask<Boolean, String> {
                 // Load image and create thumbnail in this Thread
                 SeriesThumbnail t = (SeriesThumbnail) dicomSeries.getTagValue(TagW.Thumbnail);
                 if (t == null) {
-                    t = DicomExplorer.createThumbnail(dicomSeries, dicomModel, Thumbnail.DEFAULT_SIZE);
+                    t = DicomModel.createThumbnail(dicomSeries, dicomModel, Thumbnail.DEFAULT_SIZE);
                     dicomSeries.setTag(TagW.Thumbnail, t);
                     Optional.ofNullable(t).ifPresent(v -> v.repaint());
                 }
@@ -181,11 +180,11 @@ public class LoadDicomObjects extends ExplorerTask<Boolean, String> {
                 }
 
                 if (openPlugin) {
-                    SeriesViewerFactory plugin = UIManager.getViewerFactory(dicomSeries.getMimeType());
-                    if (plugin != null && !(plugin instanceof MimeSystemAppFactory)) {
-                        openPlugin = false;
-                        ViewerPluginBuilder.openSequenceInPlugin(plugin, dicomSeries, dicomModel, true, true);
-                    }
+//                    SeriesViewerFactory plugin = UIManager.getViewerFactory(dicomSeries.getMimeType());
+//                    if (plugin != null && !(plugin instanceof MimeSystemAppFactory)) {
+//                        openPlugin = false;
+//                        ViewerPluginBuilder.openSequenceInPlugin(plugin, dicomSeries, dicomModel, true, true);
+//                    }
                 }
             } else {
                 // Test if SOPInstanceUID already exists

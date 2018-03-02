@@ -22,6 +22,9 @@ import javax.jnlp.SingleInstanceListener;
 import javax.jnlp.SingleInstanceService;
 import javax.jnlp.UnavailableServiceException;
 
+import javafx.application.Application;
+import javafx.application.Platform;
+
 public class WebstartLauncher extends WeasisLauncher implements SingleInstanceListener {
     private static final Logger LOGGER = Logger.getLogger(WebstartLauncher.class.getName());
 
@@ -82,7 +85,7 @@ public class WebstartLauncher extends WeasisLauncher implements SingleInstanceLi
     }
 
     public static void launch(String[] argv) throws Exception {
-        WeasisLauncher.launch(argv);
+        Application.launch(WeasisApp.class, argv);
     }
 
     public static void main(String[] argv) throws Exception {

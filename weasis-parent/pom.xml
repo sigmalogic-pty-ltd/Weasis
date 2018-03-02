@@ -20,7 +20,6 @@
 		<app.version>${project.version}</app.version>
 		<javaws.version>1.6.0-17</javaws.version>
 		<felix.framework.version>6.0.0</felix.framework.version>
-		<substance.version>8.0.2</substance.version>
 
 		<osgi.cmpn.version>7.0.0</osgi.cmpn.version>
 		
@@ -36,6 +35,8 @@
 
 		<slf4j.version>1.7.25</slf4j.version>
 		<sling.commons.log.version>3.0.2-r3</sling.commons.log.version>
+		<controlsfx.version>8.40.14</controlsfx.version>
+		<jfoenix.version>8.0.2</jfoenix.version>
 		<weasis.opencv.native.version>3.4.0-dcmR3</weasis.opencv.native.version>
 		<javax.json.version>1.0.4</javax.json.version>
 		<com.sun.media.j3d.version>1.5.2</com.sun.media.j3d.version>
@@ -302,9 +303,15 @@
 				<scope>provided</scope>
 			</dependency>
 			<dependency>
-				<groupId>org.weasis.thirdparty</groupId>
-				<artifactId>docking-frames</artifactId>
-				<version>${dockingframes.version}</version>
+				<groupId>org.controlsfx</groupId>
+				<artifactId>controlsfx</artifactId>
+				<version>${controlsfx.version}</version>
+				<scope>provided</scope>
+			</dependency>
+			<dependency>
+				<groupId>com.jfoenix</groupId>
+				<artifactId>jfoenix</artifactId>
+				<version>${jfoenix.version}</version>
 				<scope>provided</scope>
 			</dependency>
 
