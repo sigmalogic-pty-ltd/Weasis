@@ -13,13 +13,6 @@ package org.weasis.dicom.explorer;
 import java.util.ArrayList;
 import java.util.List;
 
-<<<<<<< Upstream, based on origin/master
-import javax.swing.SwingWorker;
-
-import org.weasis.core.api.gui.task.CircularProgressBar;
-import org.weasis.core.api.gui.util.GuiExecutor;
-=======
->>>>>>> 9d81b79 Adapt the project for FX transition
 import org.weasis.dicom.param.CancelListener;
 
 import javafx.concurrent.Task;
