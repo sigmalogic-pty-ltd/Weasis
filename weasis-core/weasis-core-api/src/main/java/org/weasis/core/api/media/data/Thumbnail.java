@@ -274,13 +274,15 @@ public class Thumbnail extends Canvas implements Thumbnailable {
                     if (imgPl != null) {
                         PlanarImage img = image.getRenderedImage(imgPl);
                         final PlanarImage thumb = createThumbnail(img);
-                        try {
-                            file = File.createTempFile("tumb_", ".jpg", Thumbnail.THUMBNAIL_CACHE_DIR); //$NON-NLS-1$ //$NON-NLS-2$
-                        } catch (IOException e) {
-                            LOGGER.error("Cannot create file for thumbnail!", e);//$NON-NLS-1$
+                        if (thumb != null) {
+                            try {
+                                file = File.createTempFile("tumb_", ".jpg", Thumbnail.THUMBNAIL_CACHE_DIR); //$NON-NLS-1$ //$NON-NLS-2$
+                            } catch (IOException e) {
+                                LOGGER.error("Cannot create file for thumbnail!", e);//$NON-NLS-1$
+                            }
                         }
                         try {
-                            if (file != null) {
+                            if (thumb != null && file != null) {
                                 MatOfInt map = new MatOfInt(Imgcodecs.CV_IMWRITE_JPEG_QUALITY, 80);
                                 if (ImageProcessor.writeImage(thumb.toMat(), file, map)) {
                                     /*
@@ -352,10 +354,14 @@ public class Thumbnail extends Canvas implements Thumbnailable {
         }
     }
 
-    @Override
-    public void dispose() {
+    protected void removeImageFromCache() {
         // Unload image from memory
         mCache.remove(this);
+    }
+
+    @Override
+    public void dispose() {
+        removeImageFromCache();
 
         if (thumbnailPath != null && thumbnailPath.getPath().startsWith(AppProperties.FILE_CACHE_DIR.getPath())) {
             FileUtil.delete(thumbnailPath);

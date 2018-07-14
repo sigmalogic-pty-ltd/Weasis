@@ -138,22 +138,23 @@ public final class FileUtil {
     }
 
     public static void getAllFilesInDirectory(File directory, List<File> files) {
+        getAllFilesInDirectory(directory, files, true);
+    }
+    
+    public static void getAllFilesInDirectory(File directory, List<File> files, boolean recursive) {
         File[] fList = directory.listFiles();
         for (File f : fList) {
             if (f.isFile()) {
                 files.add(f);
-            } else if (f.isDirectory()) {
-                getAllFilesInDirectory(f, files);
+            } else if (recursive && f.isDirectory()) {
+                getAllFilesInDirectory(f, files, recursive);
             }
         }
     }
 
     private static boolean deleteFile(File fileOrDirectory) {
         try {
-            if (!fileOrDirectory.delete()) {
-                LOGGER.warn("Cannot delete {}", fileOrDirectory.getPath()); //$NON-NLS-1$
-                return false;
-            }
+            Files.delete(fileOrDirectory.toPath());
         } catch (Exception e) {
             LOGGER.error("Cannot delete", e); //$NON-NLS-1$
             return false;
@@ -198,7 +199,7 @@ public final class FileUtil {
             }
         }
         if (deleteRoot) {
-            rootDir.delete();
+            deleteFile(rootDir);
         }
     }
 

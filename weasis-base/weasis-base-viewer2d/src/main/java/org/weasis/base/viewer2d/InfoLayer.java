@@ -16,6 +16,7 @@ import java.awt.Rectangle;
 import java.util.HashMap;
 
 import org.weasis.core.api.gui.util.ActionW;
+import org.weasis.core.api.gui.util.DecFormater;
 import org.weasis.core.api.gui.util.Filter;
 import org.weasis.core.api.image.OpManager;
 import org.weasis.core.api.image.WindowOp;
@@ -26,7 +27,6 @@ import org.weasis.core.ui.editor.image.ViewCanvas;
 import org.weasis.core.ui.model.graphic.AbstractGraphicLabel;
 import org.weasis.core.ui.model.layer.AbstractInfoLayer;
 import org.weasis.core.ui.model.layer.LayerAnnotation;
-import org.weasis.core.ui.util.DecFormater;
 
 /**
  * The Class InfoLayer.
@@ -84,7 +84,7 @@ public class InfoLayer extends AbstractInfoLayer<ImageElement> {
         if (!image.isReadable()) {
             String message = Messages.getString("InfoLayer.error_msg"); //$NON-NLS-1$
             float y = midy;
-            AbstractGraphicLabel.paintColorFontOutline(g2, message, midx - g2.getFontMetrics().stringWidth(message) / 2,
+            AbstractGraphicLabel.paintColorFontOutline(g2, message, midx - g2.getFontMetrics().stringWidth(message) / 2.0F,
                 y, Color.RED);
             String[] desc = image.getMediaReader().getReaderDescription();
             if (desc != null) {
@@ -92,7 +92,7 @@ public class InfoLayer extends AbstractInfoLayer<ImageElement> {
                     if (StringUtil.hasText(str)) {
                         y += fontHeight;
                         AbstractGraphicLabel.paintColorFontOutline(g2, str,
-                            midx - g2.getFontMetrics().stringWidth(str) / 2, y, Color.RED);
+                            midx - g2.getFontMetrics().stringWidth(str) / 2.0F, y, Color.RED);
                     }
                 }
             }

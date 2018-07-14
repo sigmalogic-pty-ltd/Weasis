@@ -100,19 +100,6 @@ public class SeriesThumbnail extends Thumbnail {
         }
     }
 
-//    public synchronized int getThumbnailSize() {
-//        return thumbnailSize;
-//    }
-//
-//    public synchronized void setThumbnailSize(int thumbnailSize) {
-//        boolean update = this.thumbnailSize != thumbnailSize;
-//        if (update) {
-//            Object media = series.getMedia(mediaPosition, null, null);
-//            this.thumbnailSize = thumbnailSize;
-//            buildThumbnail((MediaElement) media, series.getTagValue(TagW.ExplorerModel) != null, null);
-//        }
-//    }
-
     @Override
     protected void drawOverIcon(GraphicsContext gc, double x, double y, double width, double height) {
             if (series.isOpen()) {

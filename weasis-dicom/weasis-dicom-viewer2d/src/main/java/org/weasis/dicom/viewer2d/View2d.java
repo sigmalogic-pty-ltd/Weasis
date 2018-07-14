@@ -58,8 +58,11 @@ import org.weasis.core.api.explorer.model.DataExplorerModel;
 import org.weasis.core.api.explorer.model.TreeModel;
 import org.weasis.core.api.gui.util.ActionState;
 import org.weasis.core.api.gui.util.ActionW;
+import org.weasis.core.api.gui.util.ComboItemListener;
 import org.weasis.core.api.gui.util.Filter;
+import org.weasis.core.api.gui.util.JMVUtils;
 import org.weasis.core.api.gui.util.MathUtil;
+import org.weasis.core.api.gui.util.MouseActionAdapter;
 import org.weasis.core.api.image.AffineTransformOp;
 import org.weasis.core.api.image.FilterOp;
 import org.weasis.core.api.image.ImageOpEvent;
@@ -94,6 +97,7 @@ import org.weasis.core.ui.editor.image.SynchData.Mode;
 import org.weasis.core.ui.editor.image.SynchEvent;
 import org.weasis.core.ui.editor.image.ViewButton;
 import org.weasis.core.ui.editor.image.ViewCanvas;
+import org.weasis.core.ui.editor.image.ViewerPlugin;
 import org.weasis.core.ui.editor.image.ViewerToolBar;
 import org.weasis.core.ui.model.AbstractGraphicModel;
 import org.weasis.core.ui.model.graphic.DragGraphic;
@@ -107,9 +111,6 @@ import org.weasis.core.ui.model.layer.LayerType;
 import org.weasis.core.ui.model.utils.exceptions.InvalidShapeException;
 import org.weasis.core.ui.model.utils.imp.DefaultViewModel;
 import org.weasis.core.ui.util.ColorLayerUI;
-import org.weasis.core.ui.util.ComboItemListener;
-import org.weasis.core.ui.util.JMVUtils;
-import org.weasis.core.ui.util.MouseActionAdapter;
 import org.weasis.core.ui.util.MouseEventDouble;
 import org.weasis.core.ui.util.TitleMenuItem;
 import org.weasis.core.ui.util.UriListFlavor;
@@ -471,7 +472,9 @@ public class View2d extends DefaultView2d<DicomImageElement> {
             setActionsInView(ActionW.KO_SELECTION.cmd(), ko);
             setActionsInView(ActionW.FILTERED_SERIES.cmd(), filter);
             // Set the image spatial unit
-            setActionsInView(ActionW.SPATIAL_UNIT.cmd(), m.getPixelSpacingUnit());
+            if (m != null) {
+                setActionsInView(ActionW.SPATIAL_UNIT.cmd(), m.getPixelSpacingUnit());
+            }
             disOp.setParamValue(WindowOp.OP_NAME, ActionW.PRESET.cmd(), preset);
             resetZoom();
             resetPan();
@@ -1336,10 +1339,14 @@ public class View2d extends DefaultView2d<DicomImageElement> {
             if (dicomView != null) {
                 selList = ((DicomExplorer) dicomView).getSelectionList();
             }
-            View2dContainer selPlugin = (View2dContainer) UIManager.VIEWER_PLUGINS.stream()
+            Optional<ViewerPlugin<?>> pluginOp = UIManager.VIEWER_PLUGINS.stream()
                 .filter(p -> p instanceof View2dContainer && ((View2dContainer) p).isContainingView(View2d.this))
-                .findFirst().get();
-
+                .findFirst();
+            if(!pluginOp.isPresent()) {
+                return false;
+            }
+            
+            View2dContainer selPlugin = (View2dContainer) pluginOp.get();
             Series seq;
             try {
                 seq = (Series) transferable.getTransferData(Series.sequenceDataFlavor);

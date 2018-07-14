@@ -94,11 +94,11 @@ public class ImageElementIO implements MediaReader {
                     cache.setTransformedFile(file);
                     imgCachePath = null;
                 } else {
-                    file = cache.getOriginalFile().get();
+                    file = cache.getOriginalFile().orElse(null);
                 }
             }
         } else {
-            file = cache.getOriginalFile().get();
+            file = cache.getOriginalFile().orElse(null);
         }
 
         if (file != null) {
@@ -118,7 +118,7 @@ public class ImageElementIO implements MediaReader {
     }
 
     private PlanarImage readImage(File file, boolean createTiledLayout) throws Exception {
-        if (file.getPath().endsWith(".wcv")) {
+        if (file.getPath().endsWith(".wcv")) { //$NON-NLS-1$
             return new FileRawImage(file).read();
         }
 
@@ -191,9 +191,12 @@ public class ImageElementIO implements MediaReader {
 
                 @Override
                 public String getMimeType() {
-                    synchronized (this) {
-                        for (MediaElement img : medias) {
-                            return img.getMimeType();
+                    if (!medias.isEmpty()) {
+                        synchronized (this) {
+                            MediaElement img = medias.get(0);
+                            if (img != null) {
+                                return img.getMimeType();
+                            }
                         }
                     }
                     return null;
@@ -317,11 +320,11 @@ public class ImageElementIO implements MediaReader {
             try {
                 new FileRawImage(outFile).write(img);
                 ImageProcessor.writeThumbnail(img.toMat(),
-                    new File(ImageFiler.changeExtension(outFile.getPath(), ".jpg")), Thumbnail.MAX_SIZE);
+                    new File(ImageFiler.changeExtension(outFile.getPath(), ".jpg")), Thumbnail.MAX_SIZE); //$NON-NLS-1$
                 return outFile;
             } catch (Exception e) {
                 FileUtil.delete(outFile);
-                LOGGER.error("Uncompress temporary image", e);
+                LOGGER.error("Uncompress temporary image", e); //$NON-NLS-1$
             }
         }
         return null;

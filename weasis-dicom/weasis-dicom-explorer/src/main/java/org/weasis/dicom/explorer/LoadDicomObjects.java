@@ -13,6 +13,7 @@ package org.weasis.dicom.explorer;
 import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Optional;
 
 import org.dcm4che3.data.Attributes;
 import org.dcm4che3.data.Tag;
@@ -156,7 +157,7 @@ public class LoadDicomObjects extends ExplorerTask<Boolean> {
                 if (t == null) {
                     t = DicomModel.createThumbnail(dicomSeries, dicomModel, Thumbnail.DEFAULT_SIZE);
                     dicomSeries.setTag(TagW.Thumbnail, t);
-                    t.repaint();
+                    Optional.ofNullable(t).ifPresent(v -> v.repaint());
                 }
 
                 if (DicomModel.isSpecialModality(dicomSeries)) {

@@ -38,6 +38,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 
+import org.weasis.core.api.gui.util.GeomUtil;
 import org.weasis.core.api.util.StringUtil;
 import org.weasis.core.ui.Messages;
 import org.weasis.core.ui.editor.image.ViewCanvas;
@@ -50,7 +51,6 @@ import org.weasis.core.ui.model.utils.bean.AdvancedShape.BasicShape;
 import org.weasis.core.ui.model.utils.bean.AdvancedShape.ScaleInvariantShape;
 import org.weasis.core.ui.model.utils.exceptions.InvalidShapeException;
 import org.weasis.core.ui.serialize.RectangleAdapter;
-import org.weasis.core.ui.util.GeomUtil;
 import org.weasis.core.ui.util.MouseEventDouble;
 
 @XmlType(name = "annotation")

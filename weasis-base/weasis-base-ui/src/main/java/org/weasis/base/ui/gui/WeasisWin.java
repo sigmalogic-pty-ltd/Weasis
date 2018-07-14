@@ -81,7 +81,10 @@ import org.weasis.core.api.explorer.model.TreeModel;
 import org.weasis.core.api.explorer.model.TreeModelNode;
 import org.weasis.core.api.gui.Insertable;
 import org.weasis.core.api.gui.util.AppProperties;
+import org.weasis.core.api.gui.util.DynamicMenu;
 import org.weasis.core.api.gui.util.GuiExecutor;
+import org.weasis.core.api.gui.util.JMVUtils;
+import org.weasis.core.api.gui.util.WinUtil;
 import org.weasis.core.api.media.data.Codec;
 import org.weasis.core.api.media.data.MediaElement;
 import org.weasis.core.api.media.data.MediaReader;
@@ -107,12 +110,9 @@ import org.weasis.core.ui.pref.Monitor;
 import org.weasis.core.ui.pref.PreferenceDialog;
 import org.weasis.core.ui.util.ColorLayerUI;
 import org.weasis.core.ui.util.DefaultAction;
-import org.weasis.core.ui.util.DynamicMenu;
-import org.weasis.core.ui.util.JMVUtils;
 import org.weasis.core.ui.util.ToolBarContainer;
 import org.weasis.core.ui.util.Toolbar;
 import org.weasis.core.ui.util.UriListFlavor;
-import org.weasis.core.ui.util.WinUtil;
 
 import bibliothek.extension.gui.dock.theme.EclipseTheme;
 import bibliothek.extension.gui.dock.theme.eclipse.EclipseTabDockActionLocation;
@@ -648,7 +648,7 @@ public class WeasisWin {
         } else {
             b = new Rectangle(new Point(0, 0), kit.getScreenSize());
         }
-        LOGGER.debug("Max main screen bound: {}", b.toString()); //$NON-NLS-1$
+        LOGGER.debug("Max main screen bound: {}", b); //$NON-NLS-1$
 
         // Do not apply to JApplet
         if (frame == rootPaneContainer) {
@@ -1207,7 +1207,9 @@ public class WeasisWin {
                         robot.mousePress(InputEvent.BUTTON1_MASK);
                         robot.mouseRelease(InputEvent.BUTTON1_MASK);
                     } catch (AWTException e1) {
+                        // DO nothing
                     } catch (InterruptedException e) {
+                        Thread.currentThread().interrupt();
                     } finally {
                         app.setAlwaysOnTop(false);
                     }

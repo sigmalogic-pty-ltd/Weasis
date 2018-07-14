@@ -21,14 +21,14 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 
 import org.weasis.core.api.gui.util.ActionW;
+import org.weasis.core.api.gui.util.DecFormater;
+import org.weasis.core.api.gui.util.JMVUtils;
+import org.weasis.core.api.gui.util.JSliderW;
+import org.weasis.core.api.gui.util.SliderChangeListener;
 import org.weasis.core.api.util.FontTools;
 import org.weasis.core.ui.editor.image.ImageViewerEventManager;
 import org.weasis.core.ui.editor.image.ImageViewerPlugin;
 import org.weasis.core.ui.model.utils.imp.DefaultViewModel;
-import org.weasis.core.ui.util.DecFormater;
-import org.weasis.core.ui.util.JMVUtils;
-import org.weasis.core.ui.util.JSliderW;
-import org.weasis.core.ui.util.SliderChangeListener;
 
 class InfoPanel extends JPanel {
     private static final long serialVersionUID = -470038831713011257L;
@@ -44,12 +44,12 @@ class InfoPanel extends JPanel {
     private JLabel miliVolt = new JLabel();
     private JLabel seconds = new JLabel();
 
-    public InfoPanel() {
+    public InfoPanel(double zoomRatio) {
         GridBagLayout gridBagLayout = new GridBagLayout();
         setLayout(gridBagLayout);
 
         SliderChangeListener sliderListener =
-            new SliderChangeListener(ActionW.ZOOM, 1.0, DefaultViewModel.SCALE_MAX, 1.0, true, 0.1, 100) {
+            new SliderChangeListener(ActionW.ZOOM, 1.0, DefaultViewModel.SCALE_MAX, zoomRatio, true, 0.1, 100) {
 
                 @Override
                 public void stateChanged(BoundedRangeModel model) {

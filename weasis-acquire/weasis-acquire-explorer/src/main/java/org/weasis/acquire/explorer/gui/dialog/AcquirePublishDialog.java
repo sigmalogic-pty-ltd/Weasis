@@ -53,17 +53,17 @@ import org.weasis.acquire.explorer.gui.central.meta.model.imp.AcquireSerieMeta;
 import org.weasis.acquire.explorer.gui.control.AcquirePublishPanel;
 import org.weasis.acquire.explorer.gui.model.publish.PublishTree;
 import org.weasis.acquire.explorer.util.ImageInfoHelper;
+import org.weasis.core.api.gui.util.WinUtil;
 import org.weasis.core.api.image.ZoomOp;
 import org.weasis.core.api.service.BundlePreferences;
 import org.weasis.core.api.service.BundleTools;
 import org.weasis.core.api.util.FontTools;
 import org.weasis.core.api.util.StringUtil;
 import org.weasis.core.api.util.ThreadUtil;
-import org.weasis.core.ui.util.WinUtil;
 import org.weasis.dicom.explorer.pref.node.AbstractDicomNode;
 import org.weasis.dicom.explorer.pref.node.AbstractDicomNode.UsageType;
-import org.weasis.opencv.data.PlanarImage;
 import org.weasis.dicom.explorer.pref.node.DefaultDicomNode;
+import org.weasis.opencv.data.PlanarImage;
 
 @SuppressWarnings("serial")
 public class AcquirePublishDialog extends JDialog {
@@ -309,6 +309,7 @@ public class AcquirePublishDialog extends JDialog {
                             exportDirDicom = dicomizeTask.get();
                         } catch (InterruptedException doNothing) {
                             LOGGER.warn("Dicomizing task Interruption"); //$NON-NLS-1$
+                            Thread.currentThread().interrupt();
                         } catch (ExecutionException e) {
                             LOGGER.error("Dicomizing task", e); //$NON-NLS-1$
                         }
