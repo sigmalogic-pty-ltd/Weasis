@@ -577,7 +577,7 @@ public abstract class AbstractGraphicModel extends DefaultUUID implements Graphi
         Rectangle2D viewClip) {
         // Get the visible view in real coordinates, note only Sun g2d return consistent clip area with offset
         Shape area = inverseTransform.createTransformedShape(viewClip == null ? g2d.getClipBounds() : viewClip);
-        Rectangle2D bound = area.getBounds2D();
+        Rectangle2D bound = area == null ? null : area.getBounds2D();
 
         g2d.translate(0.5, 0.5);
         g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
