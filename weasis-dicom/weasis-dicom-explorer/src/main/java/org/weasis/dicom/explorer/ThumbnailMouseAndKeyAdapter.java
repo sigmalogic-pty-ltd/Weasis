@@ -71,7 +71,7 @@ public class ThumbnailMouseAndKeyAdapter extends MouseAdapter implements KeyList
 
     @Override
     public void mouseClicked(MouseEvent e) {
-        if (e.getClickCount() == 2) {
+        if (e.getClickCount() == 1) {
             final SeriesSelectionModel selList = getSeriesSelectionModel();
             selList.setOpenningSeries(true);
             Map<String, Object> props = Collections.synchronizedMap(new HashMap<String, Object>());
