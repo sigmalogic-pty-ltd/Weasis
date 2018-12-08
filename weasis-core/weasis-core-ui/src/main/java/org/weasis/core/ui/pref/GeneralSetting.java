@@ -48,6 +48,7 @@ import org.weasis.core.api.gui.util.WinUtil;
 import org.weasis.core.api.service.AuditLog;
 import org.weasis.core.api.service.AuditLog.LEVEL;
 import org.weasis.core.api.service.BundleTools;
+import org.weasis.core.api.service.ClicksNumberEnum;
 import org.weasis.core.api.service.WProperties;
 import org.weasis.core.api.util.LocalUtil;
 import org.weasis.core.api.util.StringUtil;
@@ -66,6 +67,7 @@ public class GeneralSetting extends AbstractItemDialogPage {
     private final JTextPane txtpnNote = new JTextPane();
     private final JLabel labelLocale2 =
         new JLabel(Messages.getString("GeneralSetting.language.data") + StringUtil.COLON); //$NON-NLS-1$
+    private final JLabel clicksNumberLabel = new JLabel(Messages.getString("GeneralSetting.click") + StringUtil.COLON); //$NON-NLS-1$
     @SuppressWarnings("serial")
     private final JLocaleFormat comboBoxFormat = new JLocaleFormat() {
         @Override
@@ -73,6 +75,8 @@ public class GeneralSetting extends AbstractItemDialogPage {
             txtpnNote.setText(getText());
         }
     };
+
+    private final JComboBox<ClicksNumberEnum> comboBoxClicksNumber = new JComboBox<>(ClicksNumberEnum.values());
 
     private final JLabel labelLocale = new JLabel(Messages.getString("GeneralSetting.language") + StringUtil.COLON); //$NON-NLS-1$
     @SuppressWarnings("serial")
@@ -172,13 +176,28 @@ public class GeneralSetting extends AbstractItemDialogPage {
         gbcComboBox2.gridy = 2;
         add(comboBoxFormat, gbcComboBox2);
 
+        GridBagConstraints gbcLabel3 = new GridBagConstraints();
+        gbcLabel3.insets = new Insets(5, 10, 5, 5);
+        gbcLabel3.anchor = GridBagConstraints.LINE_END;
+        gbcLabel3.gridx = 0;
+        gbcLabel3.gridy = 3;
+        add(clicksNumberLabel, gbcLabel3);
+
+        GridBagConstraints gbcComboBox3 = new GridBagConstraints();
+        gbcComboBox3.gridwidth = 3;
+        gbcComboBox3.anchor = GridBagConstraints.WEST;
+        gbcComboBox3.insets = new Insets(5, 0, 5, 0);
+        gbcComboBox3.gridx = 1;
+        gbcComboBox3.gridy = 3;
+        add(comboBoxClicksNumber, gbcComboBox3);
+
         GridBagConstraints gbcTxtpnNote = new GridBagConstraints();
         gbcTxtpnNote.anchor = GridBagConstraints.WEST;
         gbcTxtpnNote.gridwidth = 4;
         gbcTxtpnNote.insets = new Insets(5, 10, 5, 10);
         gbcTxtpnNote.fill = GridBagConstraints.HORIZONTAL;
         gbcTxtpnNote.gridx = 0;
-        gbcTxtpnNote.gridy = 3;
+        gbcTxtpnNote.gridy = 4;
         txtpnNote.setEditorKit(JMVUtils.buildHTMLEditorKit(txtpnNote));
         txtpnNote.setContentType("text/html"); //$NON-NLS-1$
         txtpnNote.setEditable(false);
@@ -190,7 +209,7 @@ public class GeneralSetting extends AbstractItemDialogPage {
         gbcChckbxConfirmationMessageWhen.anchor = GridBagConstraints.WEST;
         gbcChckbxConfirmationMessageWhen.insets = new Insets(10, 10, 5, 0);
         gbcChckbxConfirmationMessageWhen.gridx = 0;
-        gbcChckbxConfirmationMessageWhen.gridy = 4;
+        gbcChckbxConfirmationMessageWhen.gridy = 5;
         add(chckbxConfirmClosing, gbcChckbxConfirmationMessageWhen);
 
         GridBagConstraints gbcPanel = new GridBagConstraints();
@@ -199,7 +218,7 @@ public class GeneralSetting extends AbstractItemDialogPage {
         gbcPanel.insets = new Insets(5, 5, 0, 10);
         gbcPanel.fill = GridBagConstraints.HORIZONTAL;
         gbcPanel.gridx = 0;
-        gbcPanel.gridy = 5;
+        gbcPanel.gridy = 6;
         FlowLayout flowLayout = (FlowLayout) panel.getLayout();
         flowLayout.setAlignment(FlowLayout.LEADING);
         add(panel, gbcPanel);
@@ -227,7 +246,7 @@ public class GeneralSetting extends AbstractItemDialogPage {
         gbcPanel1.insets = new Insets(0, 10, 5, 10);
         gbcPanel1.fill = GridBagConstraints.BOTH;
         gbcPanel1.gridx = 0;
-        gbcPanel1.gridy = 6;
+        gbcPanel1.gridy = 7;
         FlowLayout flowLayout2 = (FlowLayout) panel1.getLayout();
         flowLayout2.setAlignment(FlowLayout.LEADING);
         add(panel1, gbcPanel1);
@@ -246,7 +265,7 @@ public class GeneralSetting extends AbstractItemDialogPage {
         gbcPanel2.insets = new Insets(5, 10, 0, 10);
         gbcPanel2.fill = GridBagConstraints.HORIZONTAL;
         gbcPanel2.gridx = 0;
-        gbcPanel2.gridy = 7;
+        gbcPanel2.gridy = 8;
         add(panel2, gbcPanel2);
         JButton btnNewButton = new JButton(Messages.getString("restore.values")); //$NON-NLS-1$
         panel2.add(btnNewButton);
@@ -316,6 +335,8 @@ public class GeneralSetting extends AbstractItemDialogPage {
         comboBoxLang.selectLocale(prfs.getProperty("locale.lang.code")); //$NON-NLS-1$
         comboBoxFormat.selectLocale();
 
+        comboBoxClicksNumber.setSelectedItem(ClicksNumberEnum.valueOf(prfs.getProperty(BundleTools.CLICKS_NUMBER, "SINGLE")));
+
         String className = prfs.getProperty("weasis.look"); //$NON-NLS-1$
         if (className == null) {
             LookAndFeel currentLAF = javax.swing.UIManager.getLookAndFeel();
@@ -356,6 +377,7 @@ public class GeneralSetting extends AbstractItemDialogPage {
     public void closeAdditionalWindow() {
         BundleTools.SYSTEM_PREFERENCES.putBooleanProperty("weasis.confirm.closing", chckbxConfirmClosing.isSelected()); //$NON-NLS-1$
 
+        BundleTools.SYSTEM_PREFERENCES.setProperty(BundleTools.CLICKS_NUMBER, comboBoxClicksNumber.getSelectedItem().toString());
         String limit = (String) comboBoxStackLimit.getSelectedItem();
         BundleTools.SYSTEM_PREFERENCES.setProperty(AuditLog.LOG_STACKTRACE_LIMIT,
             StringUtil.hasText(limit) ? limit : "-1"); //$NON-NLS-1$

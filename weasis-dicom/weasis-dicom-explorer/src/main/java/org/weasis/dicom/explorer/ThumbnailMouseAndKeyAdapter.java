@@ -46,6 +46,8 @@ import org.weasis.core.api.media.data.MediaSeriesGroup;
 import org.weasis.core.api.media.data.Series;
 import org.weasis.core.api.media.data.SeriesThumbnail;
 import org.weasis.core.api.media.data.TagW;
+import org.weasis.core.api.service.BundleTools;
+import org.weasis.core.api.service.ClicksNumberEnum;
 import org.weasis.core.ui.docking.UIManager;
 import org.weasis.core.ui.editor.DefaultMimeAppFactory;
 import org.weasis.core.ui.editor.SeriesViewer;
@@ -71,7 +73,8 @@ public class ThumbnailMouseAndKeyAdapter extends MouseAdapter implements KeyList
 
     @Override
     public void mouseClicked(MouseEvent e) {
-        if (e.getClickCount() == 1) {
+        ClicksNumberEnum clicksNumberEnum = ClicksNumberEnum.valueOf(BundleTools.SYSTEM_PREFERENCES.getProperty(BundleTools.CLICKS_NUMBER,"SINGLE"));
+        if (e.getClickCount() == clicksNumberEnum.getClicksNumber()) {
             final SeriesSelectionModel selList = getSeriesSelectionModel();
             selList.setOpenningSeries(true);
             Map<String, Object> props = Collections.synchronizedMap(new HashMap<String, Object>());

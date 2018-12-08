@@ -51,6 +51,7 @@ public class BundleTools {
     }
 
     public static final String CONFIRM_CLOSE = "weasis.confirm.closing"; //$NON-NLS-1$
+    public static final String CLICKS_NUMBER = "weasis.clicks.number"; //$NON-NLS-1$
     public static final List<Codec> CODEC_PLUGINS = Collections.synchronizedList(new ArrayList<Codec>());
     private static final File propsFile;
 
