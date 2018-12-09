@@ -29,12 +29,8 @@ import java.awt.event.MouseEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.lang.reflect.Constructor;
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.Map.Entry;
-import java.util.Objects;
 
 import javax.swing.Icon;
 import javax.swing.JComponent;
@@ -217,7 +213,7 @@ public abstract class ImageViewerPlugin<E extends ImageElement> extends ViewerPl
         if (sequence != null && selectedImagePane != null) {
             final SynchData.Mode mode = synchView.getSynchData().getMode();
             initDicomFromPreferences(Modality.valueOf(sequence.getModality()));
-            if (SynchData.Mode.TILE.equals(mode) || SynchData.Mode.DEFAULT_TILE_MULTIPLE.equals(mode)) {
+            if (SynchData.Mode.TILE.equals(mode) || SynchData.Mode.TILE_MULTIPLE.equals(mode)) {
                 selectedImagePane.setSeries(sequence, null);
                 updateTileOffset();
                 return;
@@ -600,9 +596,9 @@ public abstract class ImageViewerPlugin<E extends ImageElement> extends ViewerPl
 
     protected abstract void initDicomFromPreferences(Modality modality);
 
-    public abstract List<SynchView> getSynchList();
+    public abstract Collection<SynchView> getSynchList();
 
-    public abstract List<GridBagLayoutModel> getLayoutList();
+    public abstract Collection<GridBagLayoutModel> getLayoutList();
 
     public Boolean isContainingView(ViewCanvas<?> view2DPane) {
         return view2ds.stream().filter(v -> Objects.equals(v, view2DPane)).findFirst().map(v -> Boolean.TRUE)
@@ -622,7 +618,7 @@ public abstract class ImageViewerPlugin<E extends ImageElement> extends ViewerPl
 
     @SuppressWarnings("unchecked")
     public void updateTileOffset() {
-        if ((SynchData.Mode.DEFAULT_TILE_MULTIPLE.equals(synchView.getSynchData().getMode()) || SynchData.Mode.TILE.equals(synchView.getSynchData().getMode()) )&& selectedImagePane != null) {
+        if ((SynchData.Mode.TILE_MULTIPLE.equals(synchView.getSynchData().getMode()) || SynchData.Mode.TILE.equals(synchView.getSynchData().getMode()) )&& selectedImagePane != null) {
             MediaSeries<E> series = null;
             ViewCanvas<E> selectedView = selectedImagePane;
             if (selectedImagePane.getSeries() != null) {

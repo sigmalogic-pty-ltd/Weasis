@@ -177,8 +177,8 @@ public class WeasisWin implements Channel.MessageListener {
     private Properties properties = new Properties();
     private AblyService ablyService;
     private Gson gson;
-    private final Hashtable<String, GridBagLayoutModel> layoutModels = ModelsUtils.createDefaultLayoutModels();
-    private final Hashtable<String, SynchView> synchViews = ModelsUtils.createDefaultSynchViews();
+    private final Map<String, GridBagLayoutModel> layoutModels = ModelsUtils.createDefaultLayoutModels();
+    private final Map<String, SynchView> synchViews = ModelsUtils.createDefaultSynchViews();
     private final ConcurrentLinkedQueue<GridBagLayoutModel> layoutsQueue = new ConcurrentLinkedQueue<>();
     private final ConcurrentLinkedQueue<SynchView> synchViewsQueue = new ConcurrentLinkedQueue<>();
     private final ConcurrentLinkedQueue<Integer> scrollItemsQueue = new ConcurrentLinkedQueue<>();

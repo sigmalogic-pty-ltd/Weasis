@@ -20,11 +20,7 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 import javax.swing.Action;
 import javax.swing.Icon;
@@ -73,10 +69,7 @@ import org.weasis.core.ui.editor.image.*;
 import org.weasis.core.ui.editor.image.dockable.MeasureTool;
 import org.weasis.core.ui.editor.image.dockable.MiniTool;
 import org.weasis.core.ui.pref.modality.ModalityView;
-import org.weasis.core.ui.util.ColorLayerUI;
-import org.weasis.core.ui.util.DefaultAction;
-import org.weasis.core.ui.util.PrintDialog;
-import org.weasis.core.ui.util.Toolbar;
+import org.weasis.core.ui.util.*;
 import org.weasis.dicom.codec.DicomImageElement;
 import org.weasis.dicom.codec.DicomSeries;
 import org.weasis.dicom.codec.DicomSpecialElement;
@@ -96,12 +89,10 @@ public class View2dContainer extends ImageViewerPlugin<DicomImageElement> implem
     private static final Logger LOGGER = LoggerFactory.getLogger(View2dContainer.class);
 
     // Unmodifiable list of the default synchronization elements
-    public static final List<SynchView> DEFAULT_SYNCH_LIST =
-            Arrays.asList(SynchView.NONE, SynchView.DEFAULT_STACK, SynchView.DEFAULT_TILE, SynchView.DEFAULT_TILE_MULTIPLE);
+    public static final Collection<SynchView> DEFAULT_SYNCH_LIST = ModelsUtils.createDefaultSynchViews().values();
     //$NON-NLS-1$
     // Unmodifiable list of the default layout elements
-    public static final List<GridBagLayoutModel> DEFAULT_LAYOUT_LIST =
-            Arrays.asList(VIEWS_1x1, VIEWS_1x2, VIEWS_2x1, VIEWS_2x2_f2, VIEWS_2_f1x2, VIEWS_2x1_r1xc2_dump, VIEWS_2x2);
+    public static final Collection<GridBagLayoutModel> DEFAULT_LAYOUT_LIST = ModelsUtils.createDefaultLayoutModels().values();
 
     // Static tools shared by all the View2dContainer instances, tools are registered when a container is selected
     // Do not initialize tools in a static block (order initialization issue with eventManager), use instead a lazy
@@ -757,12 +748,12 @@ public class View2dContainer extends ImageViewerPlugin<DicomImageElement> implem
     }
 
     @Override
-    public List<SynchView> getSynchList() {
+    public Collection<SynchView> getSynchList() {
         return DEFAULT_SYNCH_LIST;
     }
 
     @Override
-    public List<GridBagLayoutModel> getLayoutList() {
+    public Collection<GridBagLayoutModel> getLayoutList() {
         int rx = 1;
         int ry = 1;
         double ratio = getWidth() / (double) getHeight();

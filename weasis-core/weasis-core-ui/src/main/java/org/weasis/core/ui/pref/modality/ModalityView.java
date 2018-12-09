@@ -24,9 +24,7 @@ import javax.swing.border.EmptyBorder;
 import javax.swing.border.TitledBorder;
 import javax.swing.event.ListDataEvent;
 import java.awt.*;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Hashtable;
+import java.util.*;
 import java.util.List;
 
 import static org.weasis.core.ui.editor.image.ViewerToolBar.*;
@@ -50,8 +48,8 @@ public class ModalityView extends AbstractItemDialogPage {
     public static final List<GridBagLayoutModel> DEFAULT_LAYOUT_LIST;
     public static final List<Integer> DEFAULT_SCROLLSET_LIST;
 
-    public static final Hashtable<String, GridBagLayoutModel> layoutModels;
-    public static final Hashtable<String, SynchView> synchViews;
+    public static final Map<String, GridBagLayoutModel> layoutModels;
+    public static final Map<String, SynchView> synchViews;
 
     public static final String systemPref = "weasis.modality.%s";
     public static final String systemSynchPref = systemPref.concat(".synch");

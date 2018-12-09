@@ -27,6 +27,7 @@ public class SynchView implements GUIEntry {
     public static final SynchView DEFAULT_TILE;
     public static final SynchView DEFAULT_STACK;
     public static final SynchView DEFAULT_TILE_MULTIPLE;
+    public static final SynchView DEFAULT_SERIES_TILE;
 
     static {
         HashMap<String, Boolean> actions = new HashMap<>();
@@ -76,7 +77,27 @@ public class SynchView implements GUIEntry {
         actions.put(ActionW.SORTSTACK.cmd(), true);
         actions.put(ActionW.SPATIAL_UNIT.cmd(), true);
         DEFAULT_TILE_MULTIPLE =
-                new SynchView(Messages.getString("SynchView.def_dtm"), "Default Tile Multiple", Mode.DEFAULT_TILE_MULTIPLE, //$NON-NLS-1$ //$NON-NLS-2$
+                new SynchView(Messages.getString("SynchView.def_dtm"), "Default Tile Multiple", Mode.TILE_MULTIPLE, //$NON-NLS-1$ //$NON-NLS-2$
+                        new ImageIcon(SynchView.class.getResource("/icon/22x22/tile.png")), actions);
+
+        actions = new HashMap<>();
+        actions.put(ActionW.SCROLL_SERIES.cmd(), true);
+        actions.put(ActionW.PAN.cmd(), true);
+        actions.put(ActionW.ZOOM.cmd(), true);
+        actions.put(ActionW.ROTATION.cmd(), true);
+        actions.put(ActionW.FLIP.cmd(), true);
+        actions.put(ActionW.WINDOW.cmd(), true);
+        actions.put(ActionW.LEVEL.cmd(), true);
+        actions.put(ActionW.PRESET.cmd(), true);
+        actions.put(ActionW.LUT_SHAPE.cmd(), true);
+        actions.put(ActionW.LUT.cmd(), true);
+        actions.put(ActionW.INVERT_LUT.cmd(), true);
+        actions.put(ActionW.FILTER.cmd(), true);
+        actions.put(ActionW.INVERSESTACK.cmd(), true);
+        actions.put(ActionW.SORTSTACK.cmd(), true);
+        actions.put(ActionW.SPATIAL_UNIT.cmd(), true);
+        DEFAULT_SERIES_TILE =
+                new SynchView(Messages.getString("SynchView.def_dst"), "Default Series Tile", Mode.SERIES_TILE, //$NON-NLS-1$ //$NON-NLS-2$
                         new ImageIcon(SynchView.class.getResource("/icon/22x22/tile.png")), actions);
     }
 
