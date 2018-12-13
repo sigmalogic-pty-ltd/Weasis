@@ -211,8 +211,9 @@ public abstract class ImageViewerPlugin<E extends ImageElement> extends ViewerPl
     @Override
     public void addSeries(MediaSeries<E> sequence) {
         if (sequence != null && selectedImagePane != null) {
+            initDicomFromPreferences(sequence.getModality() == null ? Modality.DEFAULT :
+                            Modality.valueOf(sequence.getModality()));
             final SynchData.Mode mode = synchView.getSynchData().getMode();
-            initDicomFromPreferences(Modality.valueOf(sequence.getModality()));
             if (SynchData.Mode.TILE.equals(mode) || SynchData.Mode.TILE_MULTIPLE.equals(mode)) {
                 selectedImagePane.setSeries(sequence, null);
                 updateTileOffset();

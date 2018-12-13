@@ -4,10 +4,7 @@ import org.weasis.core.api.image.GridBagLayoutModel;
 import org.weasis.core.ui.editor.image.ImageViewerPlugin;
 import org.weasis.core.ui.editor.image.SynchView;
 
-import java.util.Collections;
-import java.util.Hashtable;
-import java.util.Map;
-import java.util.TreeMap;
+import java.util.*;
 
 public final class ModelsUtils {
     private ModelsUtils() {
@@ -15,7 +12,8 @@ public final class ModelsUtils {
     }
 
     public static Map<String, GridBagLayoutModel> createDefaultLayoutModels() {
-        Map<String, GridBagLayoutModel> layoutModels = Collections.synchronizedSortedMap(new TreeMap<>());
+
+        Map<String, GridBagLayoutModel> layoutModels = Collections.synchronizedMap(new LinkedHashMap<>());
 
         layoutModels = putModelIntoTable(layoutModels, ImageViewerPlugin.VIEWS_1x1);
         layoutModels = putModelIntoTable(layoutModels, ImageViewerPlugin.VIEWS_1x2);
@@ -34,7 +32,7 @@ public final class ModelsUtils {
     }
 
     public static Map<String, SynchView> createDefaultSynchViews() {
-        Map<String, SynchView> synchViews = Collections.synchronizedSortedMap(new TreeMap<>());
+        Map<String, SynchView> synchViews = Collections.synchronizedMap(new LinkedHashMap<>());
 
         synchViews = putModelIntoTable(synchViews, SynchView.NONE);
         synchViews = putModelIntoTable(synchViews, SynchView.DEFAULT_STACK);
