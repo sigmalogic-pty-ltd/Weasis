@@ -46,9 +46,7 @@ import org.weasis.core.api.gui.util.GuiExecutor;
 import org.weasis.core.api.gui.util.WinUtil;
 import org.weasis.core.api.image.GridBagLayoutModel;
 import org.weasis.core.api.image.LayoutConstraints;
-import org.weasis.core.api.media.data.ImageElement;
-import org.weasis.core.api.media.data.MediaSeries;
-import org.weasis.core.api.media.data.Series;
+import org.weasis.core.api.media.data.*;
 import org.weasis.core.ui.Messages;
 import org.weasis.core.ui.editor.SeriesViewer;
 import org.weasis.core.ui.editor.SeriesViewerEvent;
@@ -58,6 +56,7 @@ import org.weasis.core.ui.model.graphic.DragGraphic;
 import org.weasis.core.ui.model.graphic.Graphic;
 import org.weasis.core.ui.pref.Monitor;
 import org.weasis.core.ui.util.MouseEventDouble;
+import org.weasis.dicom.codec.DicomImageElement;
 import org.weasis.dicom.codec.display.Modality;
 
 import static org.weasis.core.ui.editor.image.ImageViewerEventManager.DEFAULT_TILE_MULTIPLE_OFFSET;
@@ -216,7 +215,7 @@ public abstract class ImageViewerPlugin<E extends ImageElement> extends ViewerPl
             final SynchData.Mode mode = synchView.getSynchData().getMode();
             if (SynchData.Mode.TILE.equals(mode) || SynchData.Mode.TILE_MULTIPLE.equals(mode)) {
                 selectedImagePane.setSeries(sequence, null);
-                updateTileOffset();
+                updateTiles();
                 return;
             }
             ViewCanvas<E> viewPane = getSelectedImagePane();
@@ -613,13 +612,14 @@ public abstract class ImageViewerPlugin<E extends ImageElement> extends ViewerPl
     public void setSynchView(SynchView synchView) {
         Objects.requireNonNull(synchView);
         this.synchView = synchView;
-        updateTileOffset();
+        updateTiles();
         eventManager.updateAllListeners(this, synchView);
     }
 
     @SuppressWarnings("unchecked")
-    public void updateTileOffset() {
-        if ((SynchData.Mode.TILE_MULTIPLE.equals(synchView.getSynchData().getMode()) || SynchData.Mode.TILE.equals(synchView.getSynchData().getMode()) )&& selectedImagePane != null) {
+    public void updateTiles() {
+        if ((SynchData.Mode.TILE_MULTIPLE.equals(synchView.getSynchData().getMode())
+                || SynchData.Mode.TILE.equals(synchView.getSynchData().getMode()) ) && selectedImagePane != null) {
             MediaSeries<E> series = null;
             ViewCanvas<E> selectedView = selectedImagePane;
             if (selectedImagePane.getSeries() != null) {
@@ -645,9 +645,37 @@ public abstract class ImageViewerPlugin<E extends ImageElement> extends ViewerPl
                     }
                 }
             }
-        } else {
+        }
+        else {
             for (ViewCanvas<E> v : view2ds) {
                 v.setTileOffset(0);
+            }
+        }
+    }
+
+    public void updateSeriesTiles(){
+        if(SynchData.Mode.SERIES_TILE.equals(synchView.getSynchData().getMode())){
+            MediaSeries<E> series = null;
+            ViewCanvas<E> selectedView = selectedImagePane;
+            if (selectedImagePane.getSeries() != null) {
+                series = selectedImagePane.getSeries();
+            } else {
+                for (ViewCanvas<E> v : view2ds) {
+                    if (v.getSeries() != null) {
+                        series = v.getSeries();
+                        selectedView = v;
+                        break;
+                    }
+                }
+            }
+            if (series != null) {
+                Collection<MediaSeriesGroup> seriesList = eventManager.getSeriesGroupsFromModel((MediaSeries<DicomImageElement>) series);
+                Iterator<MediaSeriesGroup> iter = seriesList.iterator();
+                for (int i = 0; i < view2ds.size() && iter.hasNext(); i++) {
+                    MediaSeries<E> currentSeries = (MediaSeries<E>) iter.next();
+                    ViewCanvas<E> v = view2ds.get(i);
+                    v.setSeries(currentSeries, null);
+                }
             }
         }
     }

@@ -68,10 +68,7 @@ import org.slf4j.LoggerFactory;
 import org.weasis.core.api.explorer.DataExplorerView;
 import org.weasis.core.api.explorer.ObservableEvent;
 import org.weasis.core.api.explorer.model.DataExplorerModel;
-import org.weasis.core.api.gui.util.AbstractItemDialogPage;
-import org.weasis.core.api.gui.util.ActionW;
-import org.weasis.core.api.gui.util.GuiExecutor;
-import org.weasis.core.api.gui.util.JMVUtils;
+import org.weasis.core.api.gui.util.*;
 import org.weasis.core.api.media.data.MediaSeries;
 import org.weasis.core.api.media.data.MediaSeriesGroup;
 import org.weasis.core.api.media.data.MediaSeriesGroupNode;
@@ -83,10 +80,9 @@ import org.weasis.core.api.service.BundleTools;
 import org.weasis.core.api.util.FontTools;
 import org.weasis.core.api.util.StringUtil;
 import org.weasis.core.ui.docking.PluginTool;
-import org.weasis.core.ui.editor.SeriesViewer;
-import org.weasis.core.ui.editor.SeriesViewerEvent;
+import org.weasis.core.ui.docking.UIManager;
+import org.weasis.core.ui.editor.*;
 import org.weasis.core.ui.editor.SeriesViewerEvent.EVENT;
-import org.weasis.core.ui.editor.SeriesViewerListener;
 import org.weasis.core.ui.editor.image.ImageViewerPlugin;
 import org.weasis.core.ui.editor.image.ViewCanvas;
 import org.weasis.core.ui.editor.image.ViewerPlugin;
@@ -1314,6 +1310,11 @@ public class DicomExplorer extends PluginTool implements DataExplorerView, Serie
                     }
                 } else if (ObservableEvent.BasicAction.LOADING_STOP.equals(action)
                     || ObservableEvent.BasicAction.LOADING_CANCEL.equals(action)) {
+
+                    if (ObservableEvent.BasicAction.LOADING_STOP.equals(action)){
+                        loadCompleted();
+                    }
+
                     if (newVal instanceof ExplorerTask) {
                         removeTaskToGlobalProgression((ExplorerTask<?, ?>) newVal);
                     }
@@ -1335,6 +1336,25 @@ public class DicomExplorer extends PluginTool implements DataExplorerView, Serie
                             }
                         }
                     }
+                }
+            }
+        }
+    }
+
+    void loadCompleted() {
+        synchronized (UIManager.VIEWER_PLUGINS) {
+            for (int i = UIManager.VIEWER_PLUGINS.size() - 1; i >= 0; i--) {
+                final ViewerPlugin p = UIManager.VIEWER_PLUGINS.get(i);
+                // Remove the views not attached to any window (Fix bugs with external window)
+                if (WinUtil.getParentWindow(p) == null) {
+                    UIManager.VIEWER_PLUGINS.remove(i);
+                    continue;
+                }
+                if (p instanceof ImageViewerPlugin) {
+                    ImageViewerPlugin viewer = (ImageViewerPlugin) p;
+                    viewer.updateSeriesTiles();
+                    viewer.setSelectedAndGetFocus();
+                    return;
                 }
             }
         }

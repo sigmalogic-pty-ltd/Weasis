@@ -205,6 +205,20 @@ public class DicomModel implements TreeModel, DataExplorerModel {
         return null;
     }
 
+    public Collection<MediaSeriesGroup> getAllSeries(){
+        synchronized (model) {
+            Collection<MediaSeriesGroup> res = new ArrayList<>();
+            for (MediaSeriesGroup pt : getChildren(MediaSeriesGroupNode.rootNode)) {
+                for (MediaSeriesGroup st : getChildren(pt)) {
+                    for (MediaSeriesGroup item : getChildren(st)) {
+                        res.add(item);
+                    }
+                }
+            }
+            return res;
+        }
+    }
+
     @Override
     public void addHierarchyNode(MediaSeriesGroup root, MediaSeriesGroup leaf) {
         synchronized (model) {

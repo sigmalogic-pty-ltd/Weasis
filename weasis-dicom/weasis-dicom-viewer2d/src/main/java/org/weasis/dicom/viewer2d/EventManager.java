@@ -70,11 +70,8 @@ import org.weasis.core.api.image.op.ByteLut;
 import org.weasis.core.api.image.op.ByteLutCollection;
 import org.weasis.core.api.image.util.KernelData;
 import org.weasis.core.api.image.util.Unit;
-import org.weasis.core.api.media.data.MediaSeries;
+import org.weasis.core.api.media.data.*;
 import org.weasis.core.api.media.data.MediaSeries.MEDIA_POSITION;
-import org.weasis.core.api.media.data.Series;
-import org.weasis.core.api.media.data.SeriesComparator;
-import org.weasis.core.api.media.data.TagW;
 import org.weasis.core.api.service.AuditLog;
 import org.weasis.core.api.service.BundlePreferences;
 import org.weasis.core.api.service.BundleTools;
@@ -111,6 +108,7 @@ import org.weasis.dicom.codec.SortSeriesStack;
 import org.weasis.dicom.codec.TagD;
 import org.weasis.dicom.codec.display.PresetWindowLevel;
 import org.weasis.dicom.codec.geometry.ImageOrientation;
+import org.weasis.dicom.explorer.DicomModel;
 import org.weasis.dicom.viewer2d.mip.MipView;
 import org.weasis.dicom.viewer2d.mpr.MPRContainer;
 import org.weasis.dicom.viewer2d.mpr.MprView;
@@ -226,6 +224,12 @@ public class EventManager extends ImageViewerEventManager<DicomImageElement> imp
         }
 
         initializeParameters();
+    }
+
+    @Override
+    public Collection<MediaSeriesGroup> getSeriesGroupsFromModel(MediaSeries<DicomImageElement> dicomSeries){
+        DicomModel dicomModel = (DicomModel) dicomSeries.getTagValue(TagW.ExplorerModel);
+        return dicomModel.getAllSeries();
     }
 
     private void initializeParameters() {
@@ -673,7 +677,7 @@ public class EventManager extends ImageViewerEventManager<DicomImageElement> imp
                     KOManager.updateKOFilter(view, selectedKO, enableFilter, frameIndex, false);
                 }
 
-                container.updateTileOffset();
+                container.updateTiles();
                 if (!(selectedView.getSeries() instanceof DicomSeries)) {
                     List<ViewCanvas<DicomImageElement>> panes = selectedView2dContainer.getImagePanels(false);
                     if (!panes.isEmpty()) {

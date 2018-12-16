@@ -105,7 +105,7 @@ public class WeasisWinListener implements MainWindowListener {
                             }
                         }
                     }
-                } else if (ObservableEvent.BasicAction.REGISTER.equals(action)) {
+                }  else if (ObservableEvent.BasicAction.REGISTER.equals(action)) {
                     if (source instanceof ViewerPlugin) {
                         mainWindow.registerPlugin((ViewerPlugin) source);
                     } else if (source instanceof ViewerPluginBuilder) {

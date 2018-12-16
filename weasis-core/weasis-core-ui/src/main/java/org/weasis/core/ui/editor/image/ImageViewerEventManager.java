@@ -43,6 +43,7 @@ import org.weasis.core.api.image.GridBagLayoutModel;
 import org.weasis.core.api.image.util.Unit;
 import org.weasis.core.api.media.data.ImageElement;
 import org.weasis.core.api.media.data.MediaSeries;
+import org.weasis.core.api.media.data.MediaSeriesGroup;
 import org.weasis.core.api.media.data.Series;
 import org.weasis.core.api.service.WProperties;
 import org.weasis.core.ui.editor.SeriesViewerEvent;
@@ -53,6 +54,7 @@ import org.weasis.core.ui.editor.image.dockable.MeasureTool;
 import org.weasis.core.ui.model.graphic.Graphic;
 import org.weasis.core.ui.model.utils.imp.DefaultViewModel;
 import org.weasis.core.ui.pref.ZoomSetting;
+import org.weasis.dicom.codec.DicomImageElement;
 
 public abstract class ImageViewerEventManager<E extends ImageElement> implements KeyListener {
     private static final Logger LOGGER = LoggerFactory.getLogger(ImageViewerEventManager.class);
@@ -244,6 +246,10 @@ public abstract class ImageViewerEventManager<E extends ImageElement> implements
             }
 
         };
+    }
+
+    public Collection<MediaSeriesGroup> getSeriesGroupsFromModel(MediaSeries<DicomImageElement> dicomSeries){
+        return null;
     }
 
     protected SliderChangeListener newWindowAction() {

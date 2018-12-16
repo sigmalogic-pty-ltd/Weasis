@@ -20,12 +20,7 @@ import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Objects;
+import java.util.*;
 
 import javax.swing.JComponent;
 import javax.swing.JFrame;
@@ -73,6 +68,7 @@ public class ThumbnailMouseAndKeyAdapter extends MouseAdapter implements KeyList
 
     @Override
     public void mouseClicked(MouseEvent e) {
+        Collection<MediaSeriesGroup> seriesList = dicomModel.getAllSeries();
         ClicksNumberEnum clicksNumberEnum = ClicksNumberEnum.valueOf(BundleTools.SYSTEM_PREFERENCES.getProperty(BundleTools.CLICKS_NUMBER,"SINGLE"));
         if (e.getClickCount() == clicksNumberEnum.getClicksNumber()) {
             final SeriesSelectionModel selList = getSeriesSelectionModel();
