@@ -226,12 +226,6 @@ public class EventManager extends ImageViewerEventManager<DicomImageElement> imp
         initializeParameters();
     }
 
-    @Override
-    public Collection<MediaSeriesGroup> getSeriesGroupsFromModel(MediaSeries<DicomImageElement> dicomSeries){
-        DicomModel dicomModel = (DicomModel) dicomSeries.getTagValue(TagW.ExplorerModel);
-        return dicomModel.getAllSeries();
-    }
-
     private void initializeParameters() {
         enableActions(false);
     }

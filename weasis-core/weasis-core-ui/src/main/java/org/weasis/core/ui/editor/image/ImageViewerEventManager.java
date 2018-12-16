@@ -248,10 +248,6 @@ public abstract class ImageViewerEventManager<E extends ImageElement> implements
         };
     }
 
-    public Collection<MediaSeriesGroup> getSeriesGroupsFromModel(MediaSeries<DicomImageElement> dicomSeries){
-        return null;
-    }
-
     protected SliderChangeListener newWindowAction() {
 
         return new SliderChangeListener(ActionW.WINDOW, WINDOW_SMALLEST, WINDOW_LARGEST, WINDOW_DEFAULT, true, 1.25) {

@@ -27,15 +27,7 @@ import java.awt.event.ItemListener;
 import java.awt.font.FontRenderContext;
 import java.beans.PropertyChangeEvent;
 import java.io.File;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.LinkedHashSet;
-import java.util.List;
-import java.util.Objects;
-import java.util.Optional;
-import java.util.Set;
+import java.util.*;
 import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.FutureTask;
@@ -1304,17 +1296,13 @@ public class DicomExplorer extends PluginTool implements DataExplorerView, Serie
                                 DicomModel.hasSpecialElements((MediaSeriesGroup) item, KOSpecialElement.class));
                         }
                     }
+                    updateSeriesTile();
                 } else if (ObservableEvent.BasicAction.LOADING_START.equals(action)) {
                     if (newVal instanceof ExplorerTask) {
                         addTaskToGlobalProgression((ExplorerTask<?, ?>) newVal);
                     }
                 } else if (ObservableEvent.BasicAction.LOADING_STOP.equals(action)
                     || ObservableEvent.BasicAction.LOADING_CANCEL.equals(action)) {
-
-                    if (ObservableEvent.BasicAction.LOADING_STOP.equals(action)){
-                        loadCompleted();
-                    }
-
                     if (newVal instanceof ExplorerTask) {
                         removeTaskToGlobalProgression((ExplorerTask<?, ?>) newVal);
                     }
@@ -1341,7 +1329,8 @@ public class DicomExplorer extends PluginTool implements DataExplorerView, Serie
         }
     }
 
-    void loadCompleted() {
+    void updateSeriesTile() {
+        final List<MediaSeriesGroup> seriesList = getSeriesListFromStudies();
         synchronized (UIManager.VIEWER_PLUGINS) {
             for (int i = UIManager.VIEWER_PLUGINS.size() - 1; i >= 0; i--) {
                 final ViewerPlugin p = UIManager.VIEWER_PLUGINS.get(i);
@@ -1352,12 +1341,23 @@ public class DicomExplorer extends PluginTool implements DataExplorerView, Serie
                 }
                 if (p instanceof ImageViewerPlugin) {
                     ImageViewerPlugin viewer = (ImageViewerPlugin) p;
-                    viewer.updateSeriesTiles();
+                    viewer.updateSeriesTiles(seriesList);
                     viewer.setSelectedAndGetFocus();
                     return;
                 }
             }
         }
+    }
+
+    private List<MediaSeriesGroup> getSeriesListFromStudies(){
+        List<MediaSeriesGroup> seriesList = new ArrayList<>();
+        for(Map.Entry<MediaSeriesGroup, List<SeriesPane>> entry : study2series.entrySet()){
+            for(SeriesPane seriesPane : entry.getValue()){
+                if(seriesPane.sequence != null)
+                    seriesList.add(seriesPane.sequence);
+            }
+        }
+        return seriesList;
     }
 
     @Override

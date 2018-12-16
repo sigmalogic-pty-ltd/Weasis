@@ -653,29 +653,13 @@ public abstract class ImageViewerPlugin<E extends ImageElement> extends ViewerPl
         }
     }
 
-    public void updateSeriesTiles(){
-        if(SynchData.Mode.SERIES_TILE.equals(synchView.getSynchData().getMode())){
-            MediaSeries<E> series = null;
-            ViewCanvas<E> selectedView = selectedImagePane;
-            if (selectedImagePane.getSeries() != null) {
-                series = selectedImagePane.getSeries();
-            } else {
-                for (ViewCanvas<E> v : view2ds) {
-                    if (v.getSeries() != null) {
-                        series = v.getSeries();
-                        selectedView = v;
-                        break;
-                    }
-                }
-            }
-            if (series != null) {
-                Collection<MediaSeriesGroup> seriesList = eventManager.getSeriesGroupsFromModel((MediaSeries<DicomImageElement>) series);
-                Iterator<MediaSeriesGroup> iter = seriesList.iterator();
-                for (int i = 0; i < view2ds.size() && iter.hasNext(); i++) {
-                    MediaSeries<E> currentSeries = (MediaSeries<E>) iter.next();
-                    ViewCanvas<E> v = view2ds.get(i);
-                    v.setSeries(currentSeries, null);
-                }
+    public void updateSeriesTiles(List<MediaSeriesGroup> seriesList){
+        if(SynchData.Mode.SERIES_TILE.equals(synchView.getSynchData().getMode()) && seriesList != null){
+            Iterator<MediaSeriesGroup> iter = seriesList.iterator();
+            for (int i = 0; i < view2ds.size() && iter.hasNext(); i++) {
+                MediaSeries<E> currentSeries = (MediaSeries<E>) iter.next();
+                ViewCanvas<E> v = view2ds.get(i);
+                v.setSeries(currentSeries, null);
             }
         }
     }

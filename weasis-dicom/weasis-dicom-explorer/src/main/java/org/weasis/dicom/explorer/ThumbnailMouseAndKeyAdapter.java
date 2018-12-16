@@ -68,7 +68,6 @@ public class ThumbnailMouseAndKeyAdapter extends MouseAdapter implements KeyList
 
     @Override
     public void mouseClicked(MouseEvent e) {
-        Collection<MediaSeriesGroup> seriesList = dicomModel.getAllSeries();
         ClicksNumberEnum clicksNumberEnum = ClicksNumberEnum.valueOf(BundleTools.SYSTEM_PREFERENCES.getProperty(BundleTools.CLICKS_NUMBER,"SINGLE"));
         if (e.getClickCount() == clicksNumberEnum.getClicksNumber()) {
             final SeriesSelectionModel selList = getSeriesSelectionModel();
